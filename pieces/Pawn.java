@@ -9,16 +9,22 @@ public class Pawn extends Piece {
 
         if (isWhite() && coords.getCoordY < Board.MAX_Y) {
             nextCoords = new Coordinates(coords.getCoordX(), coords.getCoordY() + 1);            
-            if (nextCoords.getCoordY() < Board.MAX_Y && Board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
+            if (nextCoords.getCoordY() < Board.MAX_Y && board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
 
             nextCoords = new Coordinates(coords.getCoordX(), coords.getCoordY() + 2);
-            if (isOnStartPostion && Board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
+            if (isOnStartPostion && board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
         
             nextCoords = new Coordinates(coords.getCoordX() - 1, coords.getCoordY() + 1);
-            if (nextCoords.getCoordX() > Board.MIN_X && nextCoords.getCoordY() < Board.MAX_Y && Board.whoIsOnCoords(nextCoords) == this.color) moves.add(nextCoords);
+            if (
+                nextCoords.getCoordX() > Board.MIN_X && nextCoords.getCoordY() < Board.MAX_Y && 
+                board.whoIsOnCoords(nextCoords) instanceof Piece && board.whoIsOnCoords(nextCoords).getColor() != this.color
+            ) moves.add(nextCoords);
 
             nextCoords = new Coordinates(coords.getCoordX() + 1, coords.getCoordY() + 1);
-            if (nextCoords.getCoordX() < Board.MAX_X && nextCoords.getCoordY() < Board.MAX_Y && Board.whoIsOnCoords(nextCoords) == this.color) moves.add(nextCoords);
+            if (
+                nextCoords.getCoordX() < Board.MAX_X && nextCoords.getCoordY() < Board.MAX_Y && 
+                board.whoIsOnCoords(nextCoords) instanceof Piece && board.whoIsOnCoords(nextCoords).getColor() != this.color
+            ) moves.add(nextCoords);
         } else if (isBlack() && coords.getCoordY > Board.MIN_Y) {
             nextCoords = new Coordinates(coords.getCoordX(), coords.getCoordY() - 1);            
             if (nextCoords.getCoordY() > Board.MIN_Y && Board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
@@ -27,10 +33,16 @@ public class Pawn extends Piece {
             if (isOnStartPostion && Board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
 
             nextCoords = new Coordinates(coords.getCoordX() - 1, coords.getCoordY() - 1);
-            if (nextCoords.getCoordX() > Board.MIN_X && nextCoords.getCoordY() > Board.MIN_Y && Board.whoIsOnCoords(nextCoords) == this.color) moves.add(nextCoords);
+            if (
+                nextCoords.getCoordX() > Board.MIN_X && nextCoords.getCoordY() > Board.MIN_Y && 
+                board.whoIsOnCoords(nextCoords) instanceof Piece && board.whoIsOnCoords(nextCoords).getColor() != this.color
+            ) moves.add(nextCoords);
 
             nextCoords = new Coordinates(coords.getCoordX() + 1, coords.getCoordY() - 1);
-            if (nextCoords.getCoordX() < Board.MAX_X && nextCoords.getCoordY() > Board.MIN_Y && Board.whoIsOnCoords(nextCoords) == this.color) moves.add(nextCoords);
+            if (
+                nextCoords.getCoordX() < Board.MAX_X && nextCoords.getCoordY() > Board.MIN_Y && 
+                board.whoIsOnCoords(nextCoords) instanceof Piece && board.whoIsOnCoords(nextCoords).getColor() != this.color
+            ) moves.add(nextCoords);
         }
 
         return moves;

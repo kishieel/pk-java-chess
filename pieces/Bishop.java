@@ -19,11 +19,11 @@ public class Bishop extends Piece {
                     moves.add(nextCoords);
                     continue;
                 }
-                if (board.whoIsOnCoords(nextCoords) != this.color) {
+                if (board.whoIsOnCoords(nextCoords).getColor() != this.color) {
                     moves.add(nextCoords);
                     break;
                 }
-                if (board.whoIsOnCoords(nextCoords) == this.color) {
+                if (board.whoIsOnCoords(nextCoords).getColor() == this.color) {
                     break;
                 }
             }

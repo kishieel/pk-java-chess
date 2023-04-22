@@ -82,9 +82,7 @@ public class Board {
 
     }
 
-    public Color whoIsOnCoords(Coordinates coords) {
-        Piece piece = pieces.get(coords);
-        if (piece != null) piece.getColor();
-        return null;
+    public Piece whoIsOnCoords(Coordinates coords) {
+        return pieces.get(coords);
     }
 }

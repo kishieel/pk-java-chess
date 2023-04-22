@@ -23,11 +23,14 @@ public class King extends Piece {
             if (
                 coords.getCoordX() > 0 && coords.getCoordX() < 7 && 
                 coords.getCoordY() > 0 && coords.getCoordY() < 7 && 
-                ( Board.whoIsOnCoords(coords) == null || Board.whoIsOnCoords(coords) != this.color )
+                ( Board.whoIsOnCoords(coords) == null || Board.whoIsOnCoords(coords).color != this.color )
             ) {
                 moves.add(coords);
             }
         });
+
+        // todo: castling
+        // todo: king can not move to coords under-attack
 
         return moves;
     }
