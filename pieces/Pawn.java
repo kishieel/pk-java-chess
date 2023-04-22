@@ -5,13 +5,32 @@ package pl.edu.pk.student.tomaszkisiel.chess.utils.Coordinates;
 public class Pawn extends Piece {
     public List<Coordinates> getAllowedMoves() {
         List moves = new ArrayList<Coordinates>();
+        Coordinates nextCoords;
 
         if (isWhite() && coords.getCoordY < Board.MAX_Y) {
-            moves.add(coords.getCoordY() + 1);
-            if (isOnStartPostion) moves.add(coords.getCoordY() + 2);
+            nextCoords = new Coordinates(coords.getCoordX(), coords.getCoordY() + 1);            
+            if (nextCoords.getCoordY() < Board.MAX_Y && Board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
+
+            nextCoords = new Coordinates(coords.getCoordX(), coords.getCoordY() + 2);
+            if (isOnStartPostion && Board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
+        
+            nextCoords = new Coordinates(coords.getCoordX() - 1, coords.getCoordY() + 1);
+            if (nextCoords.getCoordX() > Board.MIN_X && nextCoords.getCoordY() < Board.MAX_Y && Board.whoIsOnCoords(nextCoords) == this.color) moves.add(nextCoords);
+
+            nextCoords = new Coordinates(coords.getCoordX() + 1, coords.getCoordY() + 1);
+            if (nextCoords.getCoordX() < Board.MAX_X && nextCoords.getCoordY() < Board.MAX_Y && Board.whoIsOnCoords(nextCoords) == this.color) moves.add(nextCoords);
         } else if (isBlack() && coords.getCoordY > Board.MIN_Y) {
-            moves.add(coords.getCoordY() - 1);
-            if (isOnStartPostion) moves.add(coords.getCoordY() - 2);
+            nextCoords = new Coordinates(coords.getCoordX(), coords.getCoordY() - 1);            
+            if (nextCoords.getCoordY() > Board.MIN_Y && Board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
+
+            nextCoords = new Coordinates(coords.getCoordX(), coords.getCoordY() - 2);
+            if (isOnStartPostion && Board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
+
+            nextCoords = new Coordinates(coords.getCoordX() - 1, coords.getCoordY() - 1);
+            if (nextCoords.getCoordX() > Board.MIN_X && nextCoords.getCoordY() > Board.MIN_Y && Board.whoIsOnCoords(nextCoords) == this.color) moves.add(nextCoords);
+
+            nextCoords = new Coordinates(coords.getCoordX() + 1, coords.getCoordY() - 1);
+            if (nextCoords.getCoordX() < Board.MAX_X && nextCoords.getCoordY() > Board.MIN_Y && Board.whoIsOnCoords(nextCoords) == this.color) moves.add(nextCoords);
         }
 
         return moves;

@@ -6,10 +6,12 @@ import pl.edu.pk.student.tomaszkisiel.chess.utils.Coordinates;
 public class Piece {
     protected Color color;
     protected Coordinates coords;
+    protected Board board;
 
-    public Piece(Color color, Coordinates coords) {
+    public Piece(Color color, Coordinates coords, Board board) {
         this.color = color;
         this.coords = coords;
+        this.board = board;
     }
 
     public boolean isWhite() {
