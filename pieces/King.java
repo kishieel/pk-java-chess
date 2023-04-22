@@ -20,7 +20,13 @@ public class King extends Piece {
         );
 
         matrix.stream().forEach(coords -> {
-            if (coords.getCoordX() > 0 && coords.getCoordX() < 7)
+            if (
+                coords.getCoordX() > 0 && coords.getCoordX() < 7 && 
+                coords.getCoordY() > 0 && coords.getCoordY() < 7 && 
+                ( Board.whoIsOnCoords(coords) == null || Board.whoIsOnCoords(coords) != this.color )
+            ) {
+                moves.add(coords);
+            }
         });
 
         return moves;
