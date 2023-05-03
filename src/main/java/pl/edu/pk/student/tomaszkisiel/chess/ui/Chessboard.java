@@ -68,7 +68,6 @@ public class Chessboard implements MouseListener {
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            ;
         });
         window.revalidate();
     }
