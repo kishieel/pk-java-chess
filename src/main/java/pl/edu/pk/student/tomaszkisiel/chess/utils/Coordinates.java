@@ -13,27 +13,26 @@ public class Coordinates {
         this.y = y;
     }
 
-    public void setCoordX(int x) {
-        this.x = x;
-    }
-
-    public void setCoordY(int y) {
-        this.y = y;
-    }
-
-    public int getCoordX() {
+    public int getX() {
         return this.x;
     }
 
-    public int getCoordY() {
+    public int getY() {
         return this.y;
+    }
+
+    public boolean isXYInRange(int minX, int maxX, int minY, int maxY) {
+        return x >= minX && x <= maxX && y >= minY && y <= maxY;
+    }
+
+    public boolean isYInRange(int minY, int maxY) {
+        return y >= minY && y <= maxY;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Coordinates)) return false;
-        Coordinates coords = (Coordinates) o;
+        if (!(o instanceof Coordinates coords)) return false;
         return this.x == coords.x && this.y == coords.y;
     }
 

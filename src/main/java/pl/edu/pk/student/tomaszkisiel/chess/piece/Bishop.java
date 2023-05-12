@@ -1,6 +1,6 @@
 package pl.edu.pk.student.tomaszkisiel.chess.piece;
 
-import pl.edu.pk.student.tomaszkisiel.chess.game.Board;
+import pl.edu.pk.student.tomaszkisiel.chess.game.PieceRepository;
 import pl.edu.pk.student.tomaszkisiel.chess.utils.Coordinates;
 
 import java.awt.*;
@@ -9,39 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bishop extends Piece {
-    public Bishop(Color color, Coordinates coords, Board board) {
-        super(color, coords, board);
+    public Bishop(Color color, Coordinates coords, PieceRepository repository) {
+        super(color, coords, repository);
     }
 
     @Override
-    public List<Coordinates> getAllowedMoves() {
-        List<Coordinates> moves = new ArrayList<>();
+    public List<Coordinates> getNextAllowedCoords() {
         List<int[]> matrix = List.of(
-                new int[]{coords.getCoordX() - 1, coords.getCoordY() - 1, -1, -1},
-                new int[]{coords.getCoordX() + 1, coords.getCoordY() - 1, +1, -1},
-                new int[]{coords.getCoordX() - 1, coords.getCoordY() + 1, -1, +1},
-                new int[]{coords.getCoordX() + 1, coords.getCoordY() + 1, +1, +1}
+                new int[]{coords.getX() - 1, coords.getY() - 1, -1, -1},
+                new int[]{coords.getX() + 1, coords.getY() - 1, +1, -1},
+                new int[]{coords.getX() - 1, coords.getY() + 1, -1, +1},
+                new int[]{coords.getX() + 1, coords.getY() + 1, +1, +1}
         );
 
-        matrix.forEach((arr) -> {
-            Coordinates nextCoords;
-            for (int x = arr[0], y = arr[1]; x >= 0 && x <= 7 && y >= 0 && y <= 7; x += arr[2], y += arr[3]) {
-                nextCoords = new Coordinates(x, y);
-                if (board.whoIsOnCoords(nextCoords) == null) {
-                    moves.add(nextCoords);
-                    continue;
-                }
-                if (board.whoIsOnCoords(nextCoords).getColor() != this.color) {
-                    moves.add(nextCoords);
-                    break;
-                }
-                if (board.whoIsOnCoords(nextCoords).getColor() == this.color) {
-                    break;
-                }
-            }
-        });
-
-        return moves;
+        return getNextAllowedCoords(matrix);
     }
 
     @Override

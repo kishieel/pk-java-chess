@@ -1,7 +1,7 @@
 package pl.edu.pk.student.tomaszkisiel.chess.piece;
 
 
-import pl.edu.pk.student.tomaszkisiel.chess.game.Board;
+import pl.edu.pk.student.tomaszkisiel.chess.game.PieceRepository;
 import pl.edu.pk.student.tomaszkisiel.chess.utils.Coordinates;
 
 import java.awt.*;
@@ -10,46 +10,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends Piece {
-    public Pawn(Color color, Coordinates coords, Board board) {
-        super(color, coords, board);
+    public Pawn(Color color, Coordinates coords, PieceRepository repository) {
+        super(color, coords, repository);
     }
 
-    public List<Coordinates> getAllowedMoves() {
+    public List<Coordinates> getNextAllowedCoords() {
         List<Coordinates> moves = new ArrayList<>();
         Coordinates nextCoords;
 
-        if (isBlack() && coords.getCoordY() < 8) {
-            nextCoords = new Coordinates(coords.getCoordX(), coords.getCoordY() + 1);
-            if (nextCoords.getCoordY() < 8 && board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
+        if (isBlack() && coords.getY() < 8) {
+            nextCoords = new Coordinates(coords.getX(), coords.getY() + 1);
+            if (nextCoords.getY() < 8 && repository.getByCoords(nextCoords).isEmpty()) moves.add(nextCoords);
 
-            nextCoords = new Coordinates(coords.getCoordX(), coords.getCoordY() + 2);
-            if (isOnStartPosition() && board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
+            nextCoords = new Coordinates(coords.getX(), coords.getY() + 2);
+            if (isOnStartPosition() && repository.getByCoords(nextCoords).isEmpty()) moves.add(nextCoords);
 
-            nextCoords = new Coordinates(coords.getCoordX() - 1, coords.getCoordY() + 1);
-            if (nextCoords.getCoordX() > 0 && nextCoords.getCoordY() < 8 && board.isEnemyOnCoords(nextCoords,
-                                                                                                  this.color))
+            nextCoords = new Coordinates(coords.getX() - 1, coords.getY() + 1);
+            if (repository.isEnemyOnCoords(nextCoords, this.color)) {
                 moves.add(nextCoords);
+            }
 
-            nextCoords = new Coordinates(coords.getCoordX() + 1, coords.getCoordY() + 1);
-            if (nextCoords.getCoordX() < 8 && nextCoords.getCoordY() < 8 && board.isEnemyOnCoords(nextCoords,
-                                                                                                  this.color))
+            nextCoords = new Coordinates(coords.getX() + 1, coords.getY() + 1);
+            if (repository.isEnemyOnCoords(nextCoords, this.color)) {
                 moves.add(nextCoords);
-        } else if (isWhite() && coords.getCoordY() > 0) {
-            nextCoords = new Coordinates(coords.getCoordX(), coords.getCoordY() - 1);
-            if (nextCoords.getCoordY() > 0 && board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
+            }
+        } else if (isWhite() && coords.getY() > 0) {
+            nextCoords = new Coordinates(coords.getX(), coords.getY() - 1);
+            if (nextCoords.getY() > 0 && repository.getByCoords(nextCoords).isEmpty()) moves.add(nextCoords);
 
-            nextCoords = new Coordinates(coords.getCoordX(), coords.getCoordY() - 2);
-            if (isOnStartPosition() && board.whoIsOnCoords(nextCoords) == null) moves.add(nextCoords);
+            nextCoords = new Coordinates(coords.getX(), coords.getY() - 2);
+            if (isOnStartPosition() && repository.getByCoords(nextCoords).isEmpty()) moves.add(nextCoords);
 
-            nextCoords = new Coordinates(coords.getCoordX() - 1, coords.getCoordY() - 1);
-            if (nextCoords.getCoordX() > 0 && nextCoords.getCoordY() > 0 && board.isEnemyOnCoords(nextCoords,
-                                                                                                  this.color))
+            nextCoords = new Coordinates(coords.getX() - 1, coords.getY() - 1);
+            if (repository.isEnemyOnCoords(nextCoords, color)) {
                 moves.add(nextCoords);
+            }
 
-            nextCoords = new Coordinates(coords.getCoordX() + 1, coords.getCoordY() - 1);
-            if (nextCoords.getCoordX() < 8 && nextCoords.getCoordY() > 0 && board.isEnemyOnCoords(nextCoords,
-                                                                                                  this.color))
+            nextCoords = new Coordinates(coords.getX() + 1, coords.getY() - 1);
+            if (repository.isEnemyOnCoords(nextCoords, color)) {
                 moves.add(nextCoords);
+            }
         }
 
         return moves;
@@ -62,6 +62,6 @@ public class Pawn extends Piece {
     }
 
     private boolean isOnStartPosition() {
-        return (isBlack() && coords.getCoordY() == 1) || (isWhite() && coords.getCoordY() == 6);
+        return (isBlack() && coords.getY() == 1) || (isWhite() && coords.getY() == 6);
     }
 }

@@ -1,6 +1,7 @@
 package pl.edu.pk.student.tomaszkisiel.chess.piece;
 
-import pl.edu.pk.student.tomaszkisiel.chess.game.Board;
+import pl.edu.pk.student.tomaszkisiel.chess.game.GameManager;
+import pl.edu.pk.student.tomaszkisiel.chess.game.PieceRepository;
 import pl.edu.pk.student.tomaszkisiel.chess.utils.Coordinates;
 
 import java.awt.*;
@@ -9,31 +10,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class King extends Piece {
-    public King(Color color, Coordinates coords, Board board) {
-        super(color, coords, board);
+
+    public King(Color color, Coordinates coords, PieceRepository repository) {
+        super(color, coords, repository);
     }
 
     @Override
-    public List<Coordinates> getAllowedMoves() {
-        List<Coordinates> moves = new ArrayList<>();
+    public List<Coordinates> getNextAllowedCoords() {
+        List<Coordinates> nextAllowedCoords = new ArrayList<>();
         List<Coordinates> matrix = List.of(
-                new Coordinates(coords.getCoordX() - 1, coords.getCoordY()),
-                new Coordinates(coords.getCoordX() - 1, coords.getCoordY() + 1),
-                new Coordinates(coords.getCoordX(), coords.getCoordY() + 1),
-                new Coordinates(coords.getCoordX() + 1, coords.getCoordY() + 1),
-                new Coordinates(coords.getCoordX() + 1, coords.getCoordY()),
-                new Coordinates(coords.getCoordX() + 1, coords.getCoordY() - 1),
-                new Coordinates(coords.getCoordX(), coords.getCoordY() - 1),
-                new Coordinates(coords.getCoordX() - 1, coords.getCoordY() - 1)
+                new Coordinates(coords.getX() - 1, coords.getY()),
+                new Coordinates(coords.getX() - 1, coords.getY() + 1),
+                new Coordinates(coords.getX(), coords.getY() + 1),
+                new Coordinates(coords.getX() + 1, coords.getY() + 1),
+                new Coordinates(coords.getX() + 1, coords.getY()),
+                new Coordinates(coords.getX() + 1, coords.getY() - 1),
+                new Coordinates(coords.getX(), coords.getY() - 1),
+                new Coordinates(coords.getX() - 1, coords.getY() - 1)
         );
 
         matrix.forEach(coords -> {
-            if (coords.getCoordX() >= 0 && coords.getCoordX() < 8 && coords.getCoordY() >= 0 && coords.getCoordY() < 8 && (board.whoIsOnCoords(coords) == null || board.isEnemyOnCoords(coords, this.color))) {
-                moves.add(coords);
+            if (coords.isXYInRange(0, 7, 0, 7) && repository.isEnemyOrNobodyOnCoords(coords, this.color)) {
+                nextAllowedCoords.add(coords);
             }
         });
 
-        return moves;
+        return nextAllowedCoords;
     }
 
     @Override
