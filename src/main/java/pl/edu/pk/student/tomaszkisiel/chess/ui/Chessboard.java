@@ -3,6 +3,7 @@ package pl.edu.pk.student.tomaszkisiel.chess.ui;
 import pl.edu.pk.student.tomaszkisiel.chess.game.GameManager;
 import pl.edu.pk.student.tomaszkisiel.chess.game.PieceRepository;
 import pl.edu.pk.student.tomaszkisiel.chess.piece.King;
+import pl.edu.pk.student.tomaszkisiel.chess.piece.Pawn;
 import pl.edu.pk.student.tomaszkisiel.chess.piece.Piece;
 import pl.edu.pk.student.tomaszkisiel.chess.utils.Coordinates;
 
@@ -13,10 +14,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Chessboard implements MouseListener {
     private final JFrame window;
@@ -146,9 +146,38 @@ public class Chessboard implements MouseListener {
         panel.removeAll();
 
         Optional<Piece> enemy = pieceRepository.getByCoords(nextMove);
-        enemy.ifPresent(pieceRepository::remove);
+        enemy.ifPresent((e) -> {
+            pieceRepository.remove(e);
+            if (!(e instanceof Pawn)) gameManager.addDeadPiece(e);
+        });
 
         piece.get().setCoords(nextMove);
+
+        if (piece.get() instanceof Pawn pawn && pawn.canBePromoted()) {
+            System.out.println("Wybierz pionka na zamianę:");
+            AtomicInteger index = new AtomicInteger(1);
+            List<Piece> piecesDead = gameManager.getDeadPieces()
+                    .stream()
+                    .filter(p -> p.getColor().equals(gameManager.getCurrentPlayer())).toList();
+            piecesDead.forEach(p -> System.out.println((index.getAndIncrement()) + ". " + p.getClass()));
+
+            Scanner in = new Scanner(System.in);
+            int opt;
+
+            while (true) {
+                System.out.print("Wybierz pionka: ");
+                try {
+                    opt = Integer.parseInt(in.nextLine()) - 1;
+                    if (opt < 0 || opt >= piecesDead.size()) System.out.println("Nieprawiłowy wybór!");
+                    else break;
+                } catch (Exception ignored) {}
+            }
+
+            Piece pieceToAdd = piecesDead.get(opt);
+            pieceToAdd.setCoords(piece.get().getCoords());
+            pieceRepository.add(pieceToAdd);
+            pieceRepository.remove(piece.get());
+        }
 
         gameManager.switchPlayer();
         panelHighlighted = null;

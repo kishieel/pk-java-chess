@@ -36,7 +36,7 @@ public class Pawn extends Piece {
             }
         } else if (isWhite() && coords.getY() > 0) {
             nextCoords = new Coordinates(coords.getX(), coords.getY() - 1);
-            if (nextCoords.getY() > 0 && repository.getByCoords(nextCoords).isEmpty()) moves.add(nextCoords);
+            if (nextCoords.getY() >= 0 && repository.getByCoords(nextCoords).isEmpty()) moves.add(nextCoords);
 
             nextCoords = new Coordinates(coords.getX(), coords.getY() - 2);
             if (isOnStartPosition() && repository.getByCoords(nextCoords).isEmpty()) moves.add(nextCoords);
@@ -59,6 +59,10 @@ public class Pawn extends Piece {
     public URL getImageUrl() {
         String name = String.format("%s-pawn.png", isWhite() ? "white" : "black");
         return ClassLoader.getSystemResource(name);
+    }
+
+    public boolean canBePromoted() {
+        return (isWhite() && coords.getY() == 0) || (isBlack() && coords.getY() == 7);
     }
 
     private boolean isOnStartPosition() {

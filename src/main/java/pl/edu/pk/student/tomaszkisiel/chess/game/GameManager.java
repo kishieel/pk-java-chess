@@ -13,6 +13,7 @@ import java.util.Optional;
 public class GameManager {
     private static GameManager instance = null;
     private final PieceRepository pieceRepository = PieceRepository.getInstance();
+    private final List<Piece> piecesDead = new ArrayList<>();
 
     private Color currentPlayer = Color.WHITE;
 
@@ -42,5 +43,17 @@ public class GameManager {
         Optional<King> king = pieceRepository.getByTypeAndColor(King.class, currentPlayer);
         if (king.isEmpty()) return false;
         return getCheckedCoords().contains(king.get().getCoords());
+    }
+
+    public void addDeadPiece(Piece piece) {
+        piecesDead.add(piece);
+    }
+
+    public List<Piece> getDeadPieces() {
+        return piecesDead;
+    }
+
+    public void removeDeadPiece(Piece piece) {
+        piecesDead.remove(piece);
     }
 }
